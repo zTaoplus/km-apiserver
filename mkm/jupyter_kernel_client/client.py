@@ -427,7 +427,7 @@ class JupyterKernelClient:
 
                     return False
 
-                await asyncio.sleep(1)
+                await asyncio.sleep(0.1)
 
             except Exception as e:
                 self.logger.exception(traceback.format_exc())
