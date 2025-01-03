@@ -36,6 +36,7 @@ from mkm.jupyter_kernel_client.excs import (
     KernelNotFoundError,
     KernelRetrieveError,
     KernelWaitReadyTimeoutError,
+    KernelResourceQuotaExceededError,
 )
 from mkm.jupyter_kernel_client.models import V1Kernel
 from mkm.jupyter_kernel_client.schema import KernelModel, KernelPayload
@@ -200,20 +201,20 @@ class JupyterKernelClient:
             )
 
         except ApiException as e:
-            traceback_str = traceback.format_exc()
             if e.status == HTTPStatus.CONFLICT.value:
-                self.logger.debug("Kernel %s already exists", payload.kernel_id)
                 error_msg = (
                     f"Kernel already exists: kernel-id: {payload.kernel_id}, namespace: {payload.kernel_namespace}"
                 )
                 raise KernelExistsError(error_msg) from e
+
             if e.status == HTTPStatus.FORBIDDEN.value:
-                self.logger.exception(traceback_str)
-                error_msg = "Kernel creation is forbidden (403). Check permissions or resource quota limits."
-                raise KernelCreationError(error_msg) from e
+                if "exceeded quota:" in e.body:
+                    error_msg = "Kernel creation is forbidden (403). Check resource quota limits."
+                    raise KernelResourceQuotaExceededError(error_msg) from e
+
+            self.logger.exception(traceback.format_exc())
 
             error_msg = f"Error creating kernel: {e.status}\n{e.reason}"
-            self.logger.exception(traceback_str)
             raise KernelCreationError(error_msg) from e
 
         if wait_for_ready:

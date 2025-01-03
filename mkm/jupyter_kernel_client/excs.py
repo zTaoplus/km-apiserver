@@ -26,3 +26,11 @@ class KernelNotFoundError(KernelRetrieveError):
 
 class KernelExistsError(KernelCreationError):
     message: str = "Kernel already exists"
+
+
+class KernelForbiddenError(KernelCreationError):
+    message: str = "Kernel creation is forbidden"
+
+
+class KernelResourceQuotaExceededError(KernelForbiddenError):
+    message: str = "Kernel creation is forbidden. Resource quota exceeded."

@@ -20,6 +20,7 @@ from mkm.jupyter_kernel_client.excs import (
     KernelNotFoundError,
     KernelRetrieveError,
     KernelWaitReadyTimeoutError,
+    KernelResourceQuotaExceededError
 )
 
 if TYPE_CHECKING:
@@ -58,6 +59,8 @@ class MainKernelHandler(CORSMixin, JSONErrorsMixin, web.RequestHandler):
             kernel = await kernel_manager.astart_kernel(payload)
         except KernelExistsError as e:
             raise web.HTTPError(409, f"Kernel already exists: {e}")  # noqa: B904
+        except KernelResourceQuotaExceededError as e:
+            raise web.HTTPError(403, str(e))  # noqa: B904
         except KernelCreationError as e:
             raise web.HTTPError(500, f"Kernel creation error: {e}")  # noqa: B904
         except KernelRetrieveError as e:
