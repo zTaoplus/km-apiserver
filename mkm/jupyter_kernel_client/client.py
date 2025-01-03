@@ -204,7 +204,7 @@ class JupyterKernelClient:
             if e.status == HTTPStatus.CONFLICT.value:
                 self.logger.debug("Kernel %s already exists", payload.kernel_id)
                 error_msg = (
-                    f"Kernel already exists: kernel-id:{payload.kernel_id}, namespace:{payload.kernel_namespace}"
+                    f"Kernel already exists: kernel-id: {payload.kernel_id}, namespace: {payload.kernel_namespace}"
                 )
                 raise KernelExistsError(error_msg) from e
             if e.status == HTTPStatus.FORBIDDEN.value:
