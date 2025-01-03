@@ -150,7 +150,7 @@ class KernelWebsocketHandler(WSHandler):  # type:ignore[misc]
         if kernel is None:
             raise web.HTTPError(500, f"Kernel not ready: {self.kernel_id}")
 
-        self.connection = self.kernel_websocket_connection_class(parent=kernel, websocket_handler=self)
+        self.connection = self.kernel_websocket_connection_class(parent=kernel, websocket_handler=self, log=logger)
 
         if self.get_argument("session_id", None):
             self.connection.session.session = self.get_argument("session_id")
