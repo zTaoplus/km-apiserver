@@ -14,12 +14,12 @@ from mkm.jupyter_kernel_client.excs import (
 from mkm.jupyter_kernel_client.schema import KernelPayload, KernelSpecName
 
 
-
-def create_mock_api_exception(status, reason, body=None,headers=None):
+def create_mock_api_exception(status, reason, body=None, headers=None):
     h = MagicMock(status=status, reason=reason, data=body)
     if headers:
         h.getheaders.return_value = headers
-    return ApiException(status=status, reason=reason,http_resp=h)
+    return ApiException(status=status, reason=reason, http_resp=h)
+
 
 @pytest.fixture
 def kernel_client():
@@ -105,7 +105,9 @@ async def test_create_kernel(mock_k8s_api, kernel_client):
 
 @pytest.mark.asyncio
 async def test_create_kernel_failure(mock_k8s_api, kernel_client):
-    mock_k8s_api.create_namespaced_custom_object.side_effect = create_mock_api_exception(status=400, reason="Bad Request")
+    mock_k8s_api.create_namespaced_custom_object.side_effect = create_mock_api_exception(
+        status=400, reason="Bad Request"
+    )
 
     payload = KernelPayload(kernel_spec_name=KernelSpecName.PYTHON)
     with pytest.raises(KernelCreationError):
@@ -123,7 +125,9 @@ async def test_create_kernel_with_existing_kernel_id(mock_k8s_api, kernel_client
 
 @pytest.mark.asyncio
 async def test_create_kernel_with_resource_quota_exceeded(mock_k8s_api, kernel_client):
-    mock_k8s_api.create_namespaced_custom_object.side_effect = create_mock_api_exception(status=403, reason="Forbidden", body="exceeded quota:")
+    mock_k8s_api.create_namespaced_custom_object.side_effect = create_mock_api_exception(
+        status=403, reason="Forbidden", body="exceeded quota:"
+    )
 
     payload = KernelPayload(kernel_spec_name=KernelSpecName.PYTHON)
     with pytest.raises(KernelResourceQuotaExceededError):
@@ -132,7 +136,9 @@ async def test_create_kernel_with_resource_quota_exceeded(mock_k8s_api, kernel_c
 
 @pytest.mark.asyncio
 async def test_create_kernel_with_other_forbidden_reason(mock_k8s_api, kernel_client):
-    mock_k8s_api.create_namespaced_custom_object.side_effect = create_mock_api_exception(status=403, reason="Forbidden", body="other reason")
+    mock_k8s_api.create_namespaced_custom_object.side_effect = create_mock_api_exception(
+        status=403, reason="Forbidden", body="other reason"
+    )
 
     payload = KernelPayload(kernel_spec_name=KernelSpecName.PYTHON)
     with pytest.raises(KernelCreationError):

@@ -67,12 +67,12 @@ def create_mock_kernel_response(kernel_id=None, kernel_name=None, *, ready=True)
     }
 
 
-
-def create_mock_api_exception(status, reason, body=None,headers=None):
+def create_mock_api_exception(status, reason, body=None, headers=None):
     h = MagicMock(status=status, reason=reason, data=body)
     if headers:
         h.getheaders.return_value = headers
-    return ApiException(status=status, reason=reason,http_resp=h)
+    return ApiException(status=status, reason=reason, http_resp=h)
+
 
 @pytest.mark.asyncio
 class TestKernelHandlers(AsyncHTTPTestCase):
@@ -164,25 +164,31 @@ class TestKernelHandlers(AsyncHTTPTestCase):
 
     def test_create_kernel_failure(self):
         """Test kernel creation failure"""
-        
-        self.mock_k8s_api.create_namespaced_custom_object.side_effect = create_mock_api_exception(status=400, reason="Bad Request")
+
+        self.mock_k8s_api.create_namespaced_custom_object.side_effect = create_mock_api_exception(
+            status=400, reason="Bad Request"
+        )
 
         body = json.dumps({"name": "python"})
         response = self.fetch("/api/kernels", method="POST", body=body, headers={"Content-Type": "application/json"})
         assert response.code == 500
-    
+
     def test_create_kernel_with_resource_quota_exceeded(self):
         """Test kernel creation failure"""
-        self.mock_k8s_api.create_namespaced_custom_object.side_effect = create_mock_api_exception(status=403, reason="Forbidden", body="exceeded quota:")
+        self.mock_k8s_api.create_namespaced_custom_object.side_effect = create_mock_api_exception(
+            status=403, reason="Forbidden", body="exceeded quota:"
+        )
 
         body = json.dumps({"name": "python"})
         response = self.fetch("/api/kernels", method="POST", body=body, headers={"Content-Type": "application/json"})
         assert response.code == 403
         assert "Kernel creation is forbidden" in response.body.decode("utf-8")
-    
+
     def test_create_kernel_with_other_forbidden_reason(self):
         """Test kernel creation failure"""
-        self.mock_k8s_api.create_namespaced_custom_object.side_effect = create_mock_api_exception(status=403, reason="Forbidden", body="other reason")
+        self.mock_k8s_api.create_namespaced_custom_object.side_effect = create_mock_api_exception(
+            status=403, reason="Forbidden", body="other reason"
+        )
 
         body = json.dumps({"name": "python"})
         response = self.fetch("/api/kernels", method="POST", body=body, headers={"Content-Type": "application/json"})
@@ -191,7 +197,9 @@ class TestKernelHandlers(AsyncHTTPTestCase):
 
     def test_create_kernel_already_exists(self):
         """Test kernel creation failure"""
-        self.mock_k8s_api.create_namespaced_custom_object.side_effect = create_mock_api_exception(status=409, reason="Conflict")
+        self.mock_k8s_api.create_namespaced_custom_object.side_effect = create_mock_api_exception(
+            status=409, reason="Conflict"
+        )
 
         body = json.dumps({"name": "python", "env": {"KERNEL_ID": "XXXXX"}})
         response = self.fetch("/api/kernels", method="POST", body=body, headers={"Content-Type": "application/json"})
@@ -201,7 +209,9 @@ class TestKernelHandlers(AsyncHTTPTestCase):
     def test_kernel_not_found(self):
         """Test getting a non-existent kernel"""
         # Mock API to raise NotFound exception
-        self.mock_k8s_api.list_namespaced_custom_object.side_effect = create_mock_api_exception(status=404, reason="Not Found")
+        self.mock_k8s_api.list_namespaced_custom_object.side_effect = create_mock_api_exception(
+            status=404, reason="Not Found"
+        )
 
         response = self.fetch("/api/kernels/nonexistent-id")
         assert response.code == 404
