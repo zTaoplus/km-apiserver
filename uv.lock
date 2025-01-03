@@ -660,7 +660,7 @@ wheels = [
 
 [[package]]
 name = "mkm"
-version = "0.1.1"
+version = "0.1.2"
 source = { virtual = "." }
 dependencies = [
     { name = "jupyter-client" },
