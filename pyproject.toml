@@ -1,0 +1,57 @@
+[project]
+name = "mkm"
+version = "0.0.1"
+requires-python = ">=3.10"
+
+dependencies = [
+  "jupyter-client>=8.0.0,<9.0.0",
+  "jupyter-server>=2.0.0,<3.0.0",
+  "kubernetes>=24.0.0,<25.0.0",
+  "pydantic>=2.0.0,<3.0.0",
+  "tornado>=6.3.0,<7.0.0"
+]
+
+[project.optional-dependencies]
+tests = [
+  "pytest",
+  "pytest-asyncio",
+  "pytest-cov",
+  "pytest-xdist"
+]
+
+fmt = [
+  "ruff"
+]
+
+[tool.pytest.ini_options]
+addopts = "--cov=mkm --cov-report=term-missing:skip-covered"
+
+[tool.uv]
+package = false
+
+[tool.coverage.run]
+source_pkgs = ["mkm"]
+branch = true
+parallel = true
+omit = [
+  "mkm/__about__.py",
+  "mkm/jupyter_kernel_client/models/*.py",
+  "mkm/__main__.py",
+]
+
+[tool.coverage.paths]
+mkm = ["mkm"]
+tests = ["tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+
+[tool.ruff]
+# Allow lines to be as long as 120.
+line-length = 120
+

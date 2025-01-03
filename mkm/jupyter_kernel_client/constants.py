@@ -1,0 +1,9 @@
+KERNEL_GROUP = "jupyrator.org"
+KERNEL_VERSION = "v1"
+KERNEL_KIND = "KernelManager"
+KERNEL_PLURAL = "kernelmanagers"
+KERNEL_ID = "jupyrator.org/kernel-id"
+KERNEL_CONNECTION = "jupyrator.org/kernel-connection-info"
+KERNEL_MANAGER_NAME = "jupyrator.org/kernelmanager-name"
+KERNEL_SPEC_NAME = "jupyrator.org/kernel-spec-name"
+KERNEL_LAST_ACTIVITY_TIME = "jupyrator.org/lastActivityTime"  # IN ANNOTATIONS
