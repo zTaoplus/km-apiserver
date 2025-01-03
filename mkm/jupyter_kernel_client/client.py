@@ -41,12 +41,7 @@ from mkm.jupyter_kernel_client.excs import (
 from mkm.jupyter_kernel_client.models import V1Kernel
 from mkm.jupyter_kernel_client.schema import KernelModel, KernelPayload
 from mkm.jupyter_kernel_client.utils import async_timer
-
-client_logger = logging.getLogger("jupyter_kernel_client.client")
-formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-handler = logging.StreamHandler()
-handler.setFormatter(formatter)
-client_logger.addHandler(handler)
+from mkm.jupyter_kernel_client.log import client_logger
 
 
 class JupyterKernelClient:

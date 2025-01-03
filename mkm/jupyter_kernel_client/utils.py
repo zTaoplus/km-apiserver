@@ -19,7 +19,7 @@ def async_timer(logger=None) -> Callable[..., Callable[P, R]]:
             finally:
                 elapsed_time = time.time() - start_time
                 if logger:
-                    logger.info(f"{func.__name__} took {elapsed_time:.2f} seconds")
+                    logger.debug(f"{func.__module__}.{func.__name__} took {elapsed_time:.2f} seconds")
 
         return wrapper
 
