@@ -20,7 +20,7 @@ from mkm.jupyter_kernel_client.excs import (
     KernelNotFoundError,
     KernelRetrieveError,
     KernelWaitReadyTimeoutError,
-    KernelResourceQuotaExceededError
+    KernelResourceQuotaExceededError,
 )
 
 if TYPE_CHECKING:

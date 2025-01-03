@@ -8,6 +8,7 @@ from tornado.log import app_log
 from mkm.jupyter_kernel_client import JupyterKernelClient
 from mkm.jupyter_kernel_client.excs import KernelDeleteError, KernelRetrieveError
 from mkm.jupyter_kernel_client.schema import KernelModel, KernelPayload
+from mkm.jupyter_kernel_client.utils import async_timer
 
 
 class KubeMultiKernelManager(AsyncMappingKernelManager):
@@ -63,6 +64,7 @@ class KubeMultiKernelManager(AsyncMappingKernelManager):
 
         return km
 
+    @async_timer(logger=app_log)
     async def alist_kernel_ids(self, namespace: str | None = None) -> list[str]:
         """List IDs of all kernels in the given namespace.
 
@@ -77,6 +79,7 @@ class KubeMultiKernelManager(AsyncMappingKernelManager):
 
     list_kernel_ids = run_sync(alist_kernel_ids)
 
+    @async_timer(logger=app_log)
     async def alist_kernels(self, namespace: str | None = None) -> list[KernelModel]:
         """List all kernels in the given namespace.
 
@@ -90,6 +93,7 @@ class KubeMultiKernelManager(AsyncMappingKernelManager):
 
     list_kernels = run_sync(alist_kernels)
 
+    @async_timer(logger=app_log)
     async def aremove_kernel(self, kernel_id: str, namespace: str | None = None) -> None:
         """Remove a kernel by ID.
 
@@ -104,6 +108,7 @@ class KubeMultiKernelManager(AsyncMappingKernelManager):
 
     remove_kernel = run_sync(aremove_kernel)
 
+    @async_timer(logger=app_log)
     async def astart_kernel(
         self,
         payload: KernelPayload,
@@ -128,6 +133,7 @@ class KubeMultiKernelManager(AsyncMappingKernelManager):
 
         return kernel
 
+    @async_timer(logger=app_log)
     async def ashutdown_all(self, namespace: str | None = None) -> None:
         """Shutdown all kernels.
 
@@ -140,6 +146,7 @@ class KubeMultiKernelManager(AsyncMappingKernelManager):
 
     shutdown_all = run_sync(ashutdown_all)
 
+    @async_timer(logger=app_log)
     async def acheck_kernel_id(self, kernel_id: str, namespace: str | None = None) -> bool:
         """Check if a kernel ID exists and is ready.
 
@@ -159,6 +166,7 @@ class KubeMultiKernelManager(AsyncMappingKernelManager):
 
     check_kernel_id = run_sync(acheck_kernel_id)
 
+    @async_timer(logger=app_log)
     async def aget_kernel(
         self, kernel_id: str, namespace: str | None = None, *, serialize: bool = False
     ) -> AsyncIOLoopKernelManager | None:

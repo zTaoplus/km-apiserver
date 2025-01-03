@@ -40,6 +40,7 @@ from mkm.jupyter_kernel_client.excs import (
 )
 from mkm.jupyter_kernel_client.models import V1Kernel
 from mkm.jupyter_kernel_client.schema import KernelModel, KernelPayload
+from mkm.jupyter_kernel_client.utils import async_timer
 
 client_logger = logging.getLogger("jupyter_kernel_client.client")
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -128,6 +129,7 @@ class JupyterKernelClient:
 
         return loop
 
+    @async_timer(logger=client_logger)
     async def acreate(
         self, payload: KernelPayload, timeout: int | None = None, *, wait_for_ready: bool = True, **kwargs
     ) -> KernelModel:
@@ -230,6 +232,7 @@ class JupyterKernelClient:
             kernel_id=payload.kernel_id, namespace=payload.kernel_namespace, timeout=timeout
         )
 
+    @async_timer(logger=client_logger)
     async def alist(self, namespace: str | None = None, timeout=None, **kwargs) -> list[KernelModel]:
         """Asynchronously list all kernel resources in a namespace or across all namespaces.
 
@@ -277,6 +280,7 @@ class JupyterKernelClient:
 
         return [KernelModel.model_validate(kernel) for kernel in kernels["items"]]
 
+    @async_timer(logger=client_logger)
     async def aget_kernel_by_id(
         self, kernel_id: str, namespace: str | None = None, timeout: int = 60, **kwargs
     ) -> KernelModel | None:
@@ -334,6 +338,7 @@ class JupyterKernelClient:
 
         return KernelModel.model_validate(kernels["items"][0])
 
+    @async_timer(logger=client_logger)
     async def adelete_by_kernel_id(
         self, kernel_id: str, namespace: str | None = None, timeout: int = 60, **kwargs
     ) -> None:
@@ -383,6 +388,7 @@ class JupyterKernelClient:
             error_msg = f"Error deleting kernel: {e.status}\n{e.reason}"
             raise KernelDeleteError(error_msg) from e
 
+    @async_timer(logger=client_logger)
     async def _wait_for_kernel_ready(self, kernel_id: str, namespace: str, timeout=60, **kwargs) -> bool:
         """Wait for a kernel to be ready by polling its status.
 
