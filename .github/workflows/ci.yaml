@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - 'mkm/**'
+      - 'km_apiserver/**'
       - 'tests/**'
       - 'pyproject.toml'
       - 'uv.lock'
@@ -12,7 +12,7 @@ on:
     branches:
       - main
     paths:
-      - 'mkm/**'
+      - 'km_apiserver/**'
       - 'tests/**'
       - 'pyproject.toml'
       - 'uv.lock'
@@ -34,8 +34,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install uv
-        run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
+        uses: astral-sh/setup-uv@v5
 
       - name: Install dependencies
         run: uv sync --all-extras   
