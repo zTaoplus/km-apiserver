@@ -1,8 +1,8 @@
-# Multi Kernel Manager API Server
+# Kernel Manager API Server
 
 ## Overview
 
-The Multi Kernel Manager API Server is a server that provides a REST API for the Multi Kernel Manager in k8s and also provides a websocket connection for the kernel.
+The Kernel Manager API Server is a server that provides a REST API for the Kernel Manager in k8s and also provides a websocket connection for the kernel.
 
 Inspired by [Jupyter Server](https://github.com/jupyter-server/jupyter_server), [Enterprise Gateway](https://github.com/jupyter-server/enterprise_gateway)
 
