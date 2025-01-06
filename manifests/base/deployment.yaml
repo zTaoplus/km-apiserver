@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: km-apiserver
+spec:
+  selector:
+    matchLabels:
+      app: km-apiserver
+  template:
+    metadata:
+      labels:
+        app: km-apiserver
+    spec:
+      serviceAccountName: default-editor
+      containers:
+      - name: km-apiserver
+        image: ghcr.io/ztaoplus/km-apiserver:latest
+        ports:
+        - containerPort: 8888
+          name: http
+        resources:
+          limits:
+            cpu: 500m
+            memory: 2Gi
+          requests:
+            cpu: 200m
+            memory: 2Gi
+        env:
+        - name: ALLOW_UNAUTHENTICATED_ACCESS
+          value: "false"
+        - name: LOG_LEVEL
+          value: INFO
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /health
+            port: 8888
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        startupProbe:
+          failureThreshold: 60
+          httpGet:
+            path: /health
+            port: 8888
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
