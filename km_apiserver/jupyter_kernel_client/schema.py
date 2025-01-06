@@ -7,7 +7,7 @@ from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
 
-from mkm.jupyter_kernel_client.constants import KERNEL_ID, KERNEL_LAST_ACTIVITY_TIME
+from km_apiserver.jupyter_kernel_client.constants import KERNEL_ID, KERNEL_LAST_ACTIVITY_TIME
 
 
 class KernelSpecName(str, Enum):

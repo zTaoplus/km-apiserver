@@ -5,7 +5,7 @@ import json
 from jupyter_client.jsonutil import json_default
 from tornado import web
 
-from mkm.jupyter_kernel_client.schema import KernelSpecName
+from km_apiserver.jupyter_kernel_client.schema import KernelSpecName
 
 
 class KernelSpecHandler(web.RequestHandler):

@@ -4,7 +4,7 @@ from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
 
-from mkm.jupyter_kernel_client.schema import KernelPayload, KernelSpecName
+from km_apiserver.jupyter_kernel_client.schema import KernelPayload, KernelSpecName
 
 
 class AliasKernelPayload(KernelPayload):
@@ -46,8 +46,6 @@ class AliasKernelPayload(KernelPayload):
 class CreateKernelPayload(BaseModel):
     name: KernelSpecName = KernelSpecName.PYTHON
     env: dict = Field(default_factory=dict)
-
-    # wait_for_ready?
 
 
 class KernelResponse(BaseModel):

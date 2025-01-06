@@ -5,10 +5,10 @@ from jupyter_core.utils import run_sync
 from jupyter_server.services.kernels.kernelmanager import AsyncMappingKernelManager
 from tornado.log import app_log
 
-from mkm.jupyter_kernel_client import JupyterKernelClient
-from mkm.jupyter_kernel_client.excs import KernelDeleteError, KernelRetrieveError
-from mkm.jupyter_kernel_client.schema import KernelModel, KernelPayload
-from mkm.jupyter_kernel_client.utils import async_timer
+from km_apiserver.jupyter_kernel_client import JupyterKernelClient
+from km_apiserver.jupyter_kernel_client.excs import KernelDeleteError, KernelRetrieveError
+from km_apiserver.jupyter_kernel_client.schema import KernelModel, KernelPayload
+from km_apiserver.jupyter_kernel_client.utils import async_timer
 
 
 class KubeMultiKernelManager(AsyncMappingKernelManager):

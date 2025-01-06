@@ -3,15 +3,15 @@ from unittest.mock import MagicMock, patch
 import pytest
 from kubernetes.client import ApiException
 
-from mkm.jupyter_kernel_client import JupyterKernelClient
-from mkm.jupyter_kernel_client.excs import (
+from km_apiserver.jupyter_kernel_client import JupyterKernelClient
+from km_apiserver.jupyter_kernel_client.excs import (
     KernelCreationError,
     KernelNotFoundError,
     KernelWaitReadyTimeoutError,
     KernelExistsError,
     KernelResourceQuotaExceededError,
 )
-from mkm.jupyter_kernel_client.schema import KernelPayload, KernelSpecName
+from km_apiserver.jupyter_kernel_client.schema import KernelPayload, KernelSpecName
 
 
 def create_mock_api_exception(status, reason, body=None, headers=None):

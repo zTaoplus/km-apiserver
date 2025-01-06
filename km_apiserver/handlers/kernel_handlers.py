@@ -11,10 +11,10 @@ from pydantic import ValidationError
 from tornado import web
 from tornado.log import app_log as logger
 
-from mkm.handlers.auth import authenticated
-from mkm.handlers.mixins import CORSMixin, JSONErrorsMixin
-from mkm.handlers.schema import AliasKernelPayload, CreateKernelPayload, KernelResponse
-from mkm.jupyter_kernel_client.excs import (
+from km_apiserver.handlers.auth import authenticated
+from km_apiserver.handlers.mixins import CORSMixin, JSONErrorsMixin
+from km_apiserver.handlers.schema import AliasKernelPayload, CreateKernelPayload, KernelResponse
+from km_apiserver.jupyter_kernel_client.excs import (
     KernelCreationError,
     KernelExistsError,
     KernelNotFoundError,

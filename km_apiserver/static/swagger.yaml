@@ -9,118 +9,48 @@ servers:
 
 components:
   schemas:
-    KernelEnv:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the environment variable, only extract the prefix of name is "KERNEL_", others are ignored
-        value:
-          type: string
-          description: Value of the environment variable
-      required:
-        - name
-        - value
-
-    VolumeMount:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the volume mount
-        mountPath:
-          type: string
-          description: Path where the volume should be mounted
-      required:
-        - name
-        - mountPath
-
     KernelPayload:
       type: object
       properties:
-        kernel_id:
-          type: string
-          description: Unique identifier for the kernel
-        kernel_spec_name:
+        name:
           type: string
           enum: [python]
           description: Name of the kernel specification
-        kernel_working_dir:
-          type: string
-          default: /home/jovyan
-          description: Working directory for the kernel
-        kernel_namespace:
-          type: string
-          default: default
-          description: Namespace where the kernel should be created
-        kernel_envs:
-          type: array
-          description: Environment variables for the kernel. Only variables with the prefix "KERNEL_" are extracted, others are ignored
-          items:
-            $ref: '#/components/schemas/KernelEnv'
-        kernel_volumes:
-          type: array
-          items:
-            type: object
-        kernel_volume_mounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/VolumeMount'
-        kernel_idle_timeout:
-          type: integer
-          default: 3600
-          description: Timeout in seconds after which an idle kernel will be culled
-        kernel_image:
-          type: string
-          default: zjuici/tablegpt-kernel:0.1.1
-          description: Container image to use for running the kernel
-        wait_for_ready:
-          type: boolean
-          default: true
-          description: Whether to wait for the kernel to be ready before returning
+        env:
+          type: object
+          description: Environment variables for the kernel. Only variables with prefix "KERNEL_" will be extracted, others are ignored
+          additionalProperties:
+            type: string
+      required:
+        - name
+        - env
 
     KernelResponse:
       type: object
       properties:
-        kernel_id:
+        id:
           type: string
-        kernel_name:
+          description: Unique identifier for the kernel
+        name:
           type: string
-        kernel_spec_name:
-          type: string
-        kernel_namespace:
-          type: string
-        kernel_working_dir:
-          type: string
-        kernel_envs:
-          type: array
-          items:
-            $ref: '#/components/schemas/KernelEnv'
-        kernel_volumes:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              configMap:
-                type: object
-                properties:
-                  name:
-                    type: string
-        kernel_volume_mounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/VolumeMount'
-        kernel_idle_timeout:
-          type: integer
-        kernel_image:
-          type: string
-        ready:
-          type: boolean
-        kernel_last_activity_time:
+          description: Generated kernel name including the ID
+        last_activity:
           type: string
           format: date-time
+          description: Last activity timestamp of the kernel
+        execution_state:
+          type: string
+          enum: [idle, starting]
+          description: Current execution state of the kernel
+        connections:
+          type: integer
+          description: Number of active connections to the kernel
+      required:
+        - id
+        - name
+        - last_activity
+        - execution_state
+        - connections
 
     Error:
       type: object
@@ -134,7 +64,7 @@ components:
     userHeader:
       type: apiKey
       in: header
-      name: X-User
+      name: X-Forwarded-User
       description: User identification header
 
 security:
@@ -224,6 +154,10 @@ paths:
           description: Invalid request
         '403':
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /api/kernels/{kernel_id}:
     parameters:
@@ -245,8 +179,22 @@ paths:
                 $ref: '#/components/schemas/KernelResponse'
         '404':
           description: Kernel not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
     delete:
       summary: Delete a kernel
@@ -255,8 +203,10 @@ paths:
           description: Kernel deleted successfully
         '403':
           description: Unauthorized
-        '404':
-          description: Kernel not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /api/kernelspecs:
     get:

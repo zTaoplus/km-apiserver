@@ -19,8 +19,8 @@ from dateutil.parser import parse
 from kubernetes import client, config
 from kubernetes.client import ApiException
 
-from mkm.jupyter_kernel_client import models as jkmodels
-from mkm.jupyter_kernel_client.constants import (
+from km_apiserver.jupyter_kernel_client import models as jkmodels
+from km_apiserver.jupyter_kernel_client.constants import (
     KERNEL_GROUP,
     KERNEL_ID,
     KERNEL_KIND,
@@ -29,7 +29,7 @@ from mkm.jupyter_kernel_client.constants import (
     KERNEL_SPEC_NAME,
     KERNEL_VERSION,
 )
-from mkm.jupyter_kernel_client.excs import (
+from km_apiserver.jupyter_kernel_client.excs import (
     KernelCreationError,
     KernelDeleteError,
     KernelExistsError,
@@ -38,10 +38,10 @@ from mkm.jupyter_kernel_client.excs import (
     KernelWaitReadyTimeoutError,
     KernelResourceQuotaExceededError,
 )
-from mkm.jupyter_kernel_client.models import V1Kernel
-from mkm.jupyter_kernel_client.schema import KernelModel, KernelPayload
-from mkm.jupyter_kernel_client.utils import async_timer
-from mkm.jupyter_kernel_client.log import client_logger
+from km_apiserver.jupyter_kernel_client.models import V1Kernel
+from km_apiserver.jupyter_kernel_client.schema import KernelModel, KernelPayload
+from km_apiserver.jupyter_kernel_client.utils import async_timer
+from km_apiserver.jupyter_kernel_client.log import client_logger
 
 
 class JupyterKernelClient:

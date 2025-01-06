@@ -1,6 +1,6 @@
 from tornado.log import access_log, app_log, enable_pretty_logging
 from tornado.options import options
-from mkm.jupyter_kernel_client.log import client_logger
+from km_apiserver.jupyter_kernel_client.log import client_logger
 
 
 def setup_logging(level: str):

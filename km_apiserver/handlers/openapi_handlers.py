@@ -5,7 +5,7 @@ from pathlib import Path
 from jupyter_server.utils import ensure_async
 from tornado import web
 
-from mkm.handlers.mixins import CORSMixin
+from km_apiserver.handlers.mixins import CORSMixin
 
 
 class BaseSpecHandler(CORSMixin, web.StaticFileHandler):

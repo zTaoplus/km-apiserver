@@ -8,8 +8,8 @@ from kubernetes.client import ApiException
 from tornado.testing import AsyncHTTPTestCase
 from tornado.web import Application
 
-from mkm.handlers import default_handlers
-from mkm.kernel_manager import KubeMultiKernelManager
+from km_apiserver.handlers import default_handlers
+from km_apiserver.kernel_manager import KubeMultiKernelManager
 
 
 def create_mock_kernel_response(kernel_id=None, kernel_name=None, *, ready=True):

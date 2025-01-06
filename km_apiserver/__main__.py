@@ -5,9 +5,9 @@ from jupyter_server.services.kernels.connection.channels import ZMQChannelsWebso
 from tornado import web
 from tornado.log import app_log
 
-from mkm.handlers import default_handlers
-from mkm.kernel_manager import KubeMultiKernelManager
-from mkm.log import setup_logging
+from km_apiserver.handlers import default_handlers
+from km_apiserver.kernel_manager import KubeMultiKernelManager
+from km_apiserver.log import setup_logging
 
 
 async def main(port: int):

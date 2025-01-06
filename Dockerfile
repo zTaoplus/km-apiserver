@@ -16,7 +16,7 @@ RUN uv sync --no-cache  && rm uv.lock pyproject.toml -f
 # We have set tool.uv.package=false in pyproject.toml to avoid installing the project package, 
 # allowing the source code layer to be copied after dependency installation. This approach also better utilizes Docker's cache layers and 
 # speeds up the build process since changes in the code do not invalidate the dependency layer.
-COPY mkm ./mkm
+COPY km_apiserver ./km_apiserver
 
 # Because mkm not installed, we need to run it using `python -m`
-CMD ["uv", "run", "python", "-m", "mkm"]
+CMD ["uv", "run", "python", "-m", "km_apiserver"]

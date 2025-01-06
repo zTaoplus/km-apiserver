@@ -1,5 +1,5 @@
 [project]
-name = "mkm"
+name = "km_apiserver"
 version = "0.1.2"
 requires-python = ">=3.10"
 
@@ -24,23 +24,22 @@ fmt = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "--cov=mkm --cov-report=term-missing:skip-covered"
+addopts = "--cov=km_apiserver --cov-report=term-missing:skip-covered"
 
 [tool.uv]
 package = false
 
 [tool.coverage.run]
-source_pkgs = ["mkm"]
+source_pkgs = ["km_apiserver"]
 branch = true
 parallel = true
 omit = [
-  "mkm/__about__.py",
-  "mkm/jupyter_kernel_client/models/*.py",
-  "mkm/__main__.py",
+  "km_apiserver/jupyter_kernel_client/models/*.py",
+  "km_apiserver/__main__.py",
 ]
 
 [tool.coverage.paths]
-mkm = ["mkm"]
+km_apiserver = ["km_apiserver"]
 tests = ["tests"]
 
 [tool.coverage.report]
